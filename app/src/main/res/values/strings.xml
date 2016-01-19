@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Belajar Realm</string>
+    <string name="title_activity_add">AddActivity</string>
+</resources>
