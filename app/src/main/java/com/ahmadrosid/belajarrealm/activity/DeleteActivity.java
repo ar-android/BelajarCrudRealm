@@ -45,30 +45,42 @@ public class DeleteActivity extends AppCompatActivity implements View.OnClickLis
         inputTitle.setText(intentTitle);
         inputDescription.setText(intentDescription);
 
+        delete.setVisibility(View.VISIBLE);
         delete.setOnClickListener(this);
         save.setOnClickListener(this);
-
 
     }
 
     @Override
     public void onClick(View v) {
-
-        title = inputTitle.getText().toString();
-        description = inputDescription.getText().toString();
         switch (v.getId()) {
             case R.id.save:
                 save();
                 break;
             case R.id.delete:
-                helper.deleteArticle(position);
+                delete();
                 break;
         }
     }
 
+    /**
+     * delete data
+     */
+    private void delete() {
+        helper.deleteData(position);
+        inputTitle.setText("");
+        inputDescription.setText("");
+    }
+
+    /**
+     * save data
+     */
     private void save() {
+        title = inputTitle.getText().toString();
+        description = inputDescription.getText().toString();
         helper.updateArticle(position, title, description);
-        data = helper.findAllArticle();
+        inputTitle.setText("");
+        inputDescription.setText("");
     }
 
 }

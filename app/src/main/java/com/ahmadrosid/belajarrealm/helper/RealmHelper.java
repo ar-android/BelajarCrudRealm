@@ -19,7 +19,6 @@ public class RealmHelper {
 
     private static final String TAG = "RealmHelper";
 
-    private Context context;
     private Realm realm;
     private RealmResults<Data> realmResult;
 
@@ -29,12 +28,11 @@ public class RealmHelper {
      * @param context
      */
     public RealmHelper(Context context) {
-        this.context = context;
         realm = Realm.getInstance(context);
     }
 
     /**
-     * add article
+     * add data
      *
      * @param title
      * @param description
@@ -53,16 +51,7 @@ public class RealmHelper {
     }
 
     /**
-     * create log
-     *
-     * @param s
-     */
-    private void showLog(String s) {
-        Log.d(TAG, s);
-    }
-
-    /**
-     * methodto find all article
+     * methodto find all data
      */
     public ArrayList<DataModel> findAllArticle() {
         ArrayList<DataModel> data = new ArrayList<>();
@@ -83,7 +72,7 @@ public class RealmHelper {
     }
 
     /**
-     * method update article
+     * method update data
      *
      * @param id
      * @param title
@@ -99,13 +88,25 @@ public class RealmHelper {
     }
 
     /**
-     * method delete article by id
+     * method delete data by id
      *
      * @param id
      */
-    public void deleteArticle(int id) {
+    public void deleteData(int id) {
+        RealmResults<Data> dataDesults = realm.where(Data.class).equalTo("id", id).findAll();
         realm.beginTransaction();
-        realmResult.remove(id);
+        dataDesults.remove(0);
+        dataDesults.removeLast();
+        dataDesults.clear();
         realm.commitTransaction();
+    }
+
+    /**
+     * create log
+     *
+     * @param s
+     */
+    private void showLog(String s) {
+        Log.d(TAG, s);
     }
 }

@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.ahmadrosid.belajarrealm.App;
 import com.ahmadrosid.belajarrealm.R;
 import com.ahmadrosid.belajarrealm.adapter.AdapterArticle;
 import com.ahmadrosid.belajarrealm.helper.RealmHelper;
@@ -32,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        data = App.getData();
+        data = new ArrayList<>();
         helper = new RealmHelper(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.rvArticle);
@@ -49,7 +48,15 @@ public class HomeActivity extends AppCompatActivity {
         setRecyclerView();
     }
 
+    /**
+     * set recyclerview with try get data from realm
+     */
     public void setRecyclerView(){
+        try{
+            data = helper.findAllArticle();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         AdapterArticle adapter = new AdapterArticle(data, new AdapterArticle.OnItemClickListener() {
             @Override
             public void onClick(DataModel item) {
@@ -58,7 +65,6 @@ public class HomeActivity extends AppCompatActivity {
                 i.putExtra("title", item.getTitle());
                 i.putExtra("description", item.getDescription());
                 startActivity(i);
-//                finish();
             }
         });
         recyclerView.setAdapter(adapter);
@@ -67,7 +73,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        data = helper.findAllArticle();
+        try{
+            data = helper.findAllArticle();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        data = helper.findAllArticle();
         setRecyclerView();
     }
 }
